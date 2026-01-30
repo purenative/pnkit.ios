@@ -5,8 +5,8 @@ public struct ShimmerListContainer<
     ItemContent: View,
     SeparatorContent: View
 >: View {
-    private let contentColor: Color
-    private let highlightColor: Color
+    private let fromColor: Color
+    private let toColor: Color
     private let itemsCount: Int
     private let spacing: CGFloat
     private let padding: EdgeInsets
@@ -19,8 +19,8 @@ public struct ShimmerListContainer<
     private let separatorContent: () -> SeparatorContent
     
     public init(
-        contentColor: Color,
-        highlightColor: Color,
+        fromColor: Color,
+        toColor: Color,
         itemsCount: Int,
         spacing: CGFloat = 16,
         padding: EdgeInsets = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16),
@@ -28,8 +28,8 @@ public struct ShimmerListContainer<
         itemContnet: @escaping () -> ItemContent,
         separatorContent: @escaping () -> SeparatorContent = { EmptyView() }
     ) {
-        self.contentColor = contentColor
-        self.highlightColor = highlightColor
+        self.fromColor = fromColor
+        self.toColor = toColor
         self.itemsCount = itemsCount
         self.spacing = spacing
         self.padding = padding
@@ -55,8 +55,8 @@ public struct ShimmerListContainer<
                 }
                 .padding(padding)
                 .shimmering(
-                    contentColor: contentColor,
-                    highlightColor: highlightColor
+                    fromColor: fromColor,
+                    toColor: toColor
                 )
             }
     }

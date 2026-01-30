@@ -1,7 +1,7 @@
 import UIKit
 
 @MainActor
-public final class ApplicationNavigator {
+public final class AppNavigator {
     let applicationViewController = ApplicationViewController()
     var navigationControllerType: UINavigationController.Type = UINavigationController.self
     
@@ -20,6 +20,10 @@ public final class ApplicationNavigator {
     
     public func setRoot(screen: ApplicationScreen) {
         setRoot(viewController: screen.buildController())
+    }
+    
+    public func changeTab(tabIndex: Int) {
+        applicationViewController.getRootTabBarController()?.selectedIndex = tabIndex
     }
     
     public func push(viewController: UIViewController) {

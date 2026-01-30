@@ -21,6 +21,10 @@ internal final class ApplicationViewController: UIViewController {
         currentRootViewController = newRootViewController
     }
     
+    func getRootTabBarController() -> UITabBarController? {
+        currentRootViewController as? UITabBarController
+    }
+    
     func getCurrentPresentedNavigationController() -> UINavigationController? {
         var lastPresentedNavigationController = nextPresentedNavigationController(startsFrom: currentRootViewController) ?? currentRootViewController as? UINavigationController
         
