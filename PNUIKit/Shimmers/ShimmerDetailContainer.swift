@@ -1,19 +1,19 @@
 import SwiftUI
 
 public struct ShimmerDetailContainer<DetailContent: View>: View {
-    private let contentColor: Color
-    private let highlightColor: Color
+    private let fromColor: Color
+    private let toColor: Color
     private let padding: EdgeInsets
     private let detailContent: () -> DetailContent
     
     public init(
-        contentColor: Color,
-        highlightColor: Color,
+        fromColor: Color,
+        toColor: Color,
         padding: EdgeInsets = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16),
         @ViewBuilder detailContent: @escaping () -> DetailContent
     ) {
-        self.contentColor = contentColor
-        self.highlightColor = highlightColor
+        self.fromColor = fromColor
+        self.toColor = toColor
         self.padding = padding
         self.detailContent = detailContent
     }
@@ -23,8 +23,8 @@ public struct ShimmerDetailContainer<DetailContent: View>: View {
             .overlay(alignment: .top) {
                 detailContent()
                     .shimmering(
-                        contentColor: contentColor,
-                        highlightColor: highlightColor
+                        fromColor: fromColor,
+                        toColor: toColor
                     )
             }
             .padding(padding)

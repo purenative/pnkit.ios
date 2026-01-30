@@ -19,6 +19,8 @@ public struct AuthFormScreenTemplate<
     private var currentContentHeight: CGFloat
     @State
     private var formOffsetY: CGFloat?
+    @State
+    private var isAppeared = false
     
     private let fields: [Field]
     private let spacing: CGFloat
@@ -91,7 +93,13 @@ public struct AuthFormScreenTemplate<
                 )
             })
         }
-        .transaction({ $0.animation = keyboardState.animation })
+        .transaction({
+            if (isAppeared) {
+                $0.animation = keyboardState.animation
+            }
+        })
+        .onAppear(perform: { isAppeared = true })
+        .onDisappear(perform: { isAppeared = false })
     }
     
     private func calculateFormOffsetY(
@@ -99,7 +107,7 @@ public struct AuthFormScreenTemplate<
         currentContentHeight: CGFloat,
         containerSize: CGSize
     ) -> CGFloat {
-        if isKeyboardOpened {
+        if isAppeared && isKeyboardOpened {
             (containerSize.height - currentContentHeight)
         } else {
             (containerSize.height - currentContentHeight) / 2

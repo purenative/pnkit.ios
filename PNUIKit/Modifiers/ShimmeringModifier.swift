@@ -2,42 +2,44 @@ import SwiftUI
 
 public struct ShimmeringModifier: ViewModifier {
     @State
-    private var opacity: CGFloat = 0
+    private var currentColor: Color
     
-    private let contentColor: Color
-    private let highlightColor: Color
+    private let fromColor: Color
+    private let toColor: Color
+    private let durationMilliseconds: Int
     
     public init(
-        contentColor: Color,
-        highlightColor: Color
+        fromColor: Color,
+        toColor: Color,
+        durationMilliseconds: Int = 750
     ) {
-        self.contentColor = contentColor
-        self.highlightColor = highlightColor
+        self.fromColor = fromColor
+        self.toColor = toColor
+        self.durationMilliseconds = durationMilliseconds
+        
+        currentColor = fromColor
     }
     
     public func body(content: Content) -> some View {
         content
-            .foregroundColor(contentColor)
-            .overlay(
-                highlightColor.opacity(opacity)
-                    .onAppear(perform: {
-                        withAnimation(.easeInOut(duration: 0.75).repeatForever(autoreverses: true)) {
-                            opacity = 0.4
-                        }
-                    })
-            )
+            .foregroundColor(currentColor)
+            .onAppear(perform: {
+                withAnimation(.easeInOut(duration: TimeInterval(durationMilliseconds) / 1000).repeatForever(autoreverses: true)) {
+                    currentColor = toColor
+                }
+            })
     }
 }
 
 extension View {
     public func shimmering(
-        contentColor: Color,
-        highlightColor: Color
+        fromColor: Color,
+        toColor: Color
     ) -> some View {
         modifier(
             ShimmeringModifier(
-                contentColor: contentColor,
-                highlightColor: highlightColor
+                fromColor: fromColor,
+                toColor: toColor
             )
         )
     }

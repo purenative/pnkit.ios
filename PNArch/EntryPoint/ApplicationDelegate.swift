@@ -16,4 +16,24 @@ final class ApplicationDelegate: NSObject, UIApplicationDelegate {
         config.delegateClass = ApplicationSceneDelegate.self
         return config
     }
+    
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+        ApplicationServicesConfiguration.delegateProxy?.application?(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        ) ?? true
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        ApplicationServicesConfiguration.delegateProxy?.application?(
+            application,
+            didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
+        )
+    }
 }

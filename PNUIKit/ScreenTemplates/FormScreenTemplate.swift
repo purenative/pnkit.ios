@@ -4,18 +4,18 @@ fileprivate class FormScreenTemplateState<Field: Hashable>: ObservableObject {
     let fields: [Field]
     private let nextButtonTitle: String
     private let acceptButtonTitle: String
-    private let onAcceptTapped: () -> Void
+    private let onAcceptButtonTapped: () -> Void
     
     init(
         fields: [Field],
         nextButtonTitle: String,
         acceptButtonTitle: String,
-        onAcceptTapped: @escaping () -> Void
+        onAcceptButtonTapped: @escaping () -> Void
     ) {
         self.fields = fields
         self.nextButtonTitle = nextButtonTitle
         self.acceptButtonTitle = acceptButtonTitle
-        self.onAcceptTapped = onAcceptTapped
+        self.onAcceptButtonTapped = onAcceptButtonTapped
     }
     
     func actionButtonTitle(when focusedField: Field?) -> String {
@@ -24,7 +24,7 @@ fileprivate class FormScreenTemplateState<Field: Hashable>: ObservableObject {
     
     func nextFocusedField(after focusedField: Field?) -> Field? {
         guard let focusedField else {
-            onAcceptTapped()
+            onAcceptButtonTapped()
             return nil
         }
         
@@ -34,7 +34,7 @@ fileprivate class FormScreenTemplateState<Field: Hashable>: ObservableObject {
             return fields[nextFieldIndex]
         }
         
-        onAcceptTapped()
+        onAcceptButtonTapped()
         return nil
     }
 }
@@ -63,7 +63,6 @@ public struct FormScreenTemplate<
     private let fieldContent: (Field) -> FieldContent
     private let footerContent: () -> FooterContent
     private let acceptButtonEnabled: Bool
-    private let showLoader: Bool
     private let acceptButtonContent: (FormScreenAcceptButtonConfiguration) -> AcceptButtonContent
     
     public init(
@@ -76,15 +75,14 @@ public struct FormScreenTemplate<
         nextButtonTitle: String,
         acceptButtonTitle: String,
         acceptButtonEnabled: Bool,
-        onAcceptTapped: @escaping () -> Void,
-        showLoader: Bool,
+        onAcceptButtonTapped: @escaping () -> Void,
         acceptButtonContent: @escaping (FormScreenAcceptButtonConfiguration) -> AcceptButtonContent
     ) {
         let state = FormScreenTemplateState(
             fields: fields,
             nextButtonTitle: nextButtonTitle,
             acceptButtonTitle: acceptButtonTitle,
-            onAcceptTapped: onAcceptTapped
+            onAcceptButtonTapped: onAcceptButtonTapped
         )
         _state = .init(wrappedValue: state)
         
@@ -94,7 +92,6 @@ public struct FormScreenTemplate<
         self.fieldContent = fieldContent
         self.footerContent = footerContent
         self.acceptButtonEnabled = acceptButtonEnabled
-        self.showLoader = showLoader
         self.acceptButtonContent = acceptButtonContent
     }
     
